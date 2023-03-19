@@ -1,0 +1,171 @@
+{% extends "base.html" %} {% block title %}Dlužníček{% endblock %} {% block content
+%}
+
+    <div class="w-100 mt-5">
+      <h1 align="center">Transactions</h1>
+      <ul class="list-group list-group-flush" id="payments"></ul>
+      <form method="POST" class="d-flex">
+        
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-2">
+              <label for="input-name">Name</label>
+              <input
+                class="pt-1 pb-1 form-control"
+                type="text"
+                name="name"
+                id="input-name"
+                placeholder="Name"
+              />
+            </div>
+            <div class="col-md-2">
+              <label for="input-amount">Amount</label>
+              <input
+                class="pt-1 pb-1 form-control"
+                type="text"
+                name="amount"
+                id="input-amount"
+                placeholder="Amount"
+              />
+            </div>
+            <div class="col-md-1">
+              <label for="input-currency">Currency</label>
+              <input
+                class="pt-1 pb-1 form-control"
+                type="text"
+                name="currency"
+                id="input-currency"
+                placeholder="Currency"
+                value="CZK"
+              />
+            </div>
+            <div class="col-md-2">
+              <label for="input-payer">Payer</label>
+              <input
+                class="pt-1 pb-1 form-control"
+                type="text"
+                name="payer"
+                id="input-payer"
+                placeholder="Payer"
+              />
+            </div>
+            <div class="col-md-2">
+              <label for="input-debtors">Debtors</label>
+              <input
+                class="pt-1 pb-1 form-control"
+                class="class"
+                type="text"
+                name="debtors"
+                id="input-debtors"
+                placeholder="Debtors"
+              />
+            </div>
+            <div class="col-md-2">
+              <label for="input-date">Date</label>
+              <input
+                class="pt-1 pb-1 form-control"
+                type="text"
+                name="date"
+                id="input-date"
+                placeholder="Date"
+              />
+            </div>
+            <div class="col-md-1 pt-1">
+              <br />
+              <button
+                id="input-submit-button"
+                type="submit"
+                class="btn btn-primary mt-1 form-control"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <textarea
+                name="note"
+                id="note"
+                class="form-control w-100"
+                placeholder="note"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </form>
+      <li class="list-group-item ml-3 mr-3">
+      <p>
+        <div class="container-fluid">
+          <div class="row ">
+        
+            <div class="col-lg-1 col-md-6">
+              Name
+            </div>
+            <div class="col-lg-1 col-md-6">
+              Amount
+            </div>
+            <div class="col-lg-1 col-md-6">
+              Currency
+            </div>
+            <div class="col-lg-1 col-md-6">
+              Payer
+            </div>
+            <div class="col-lg-2 col-md-6">
+              Deptors
+            </div>
+            <div class="col-lg-1 col-md-6">
+              Date
+            </div>
+            <div class="col-lg-1 col-md-6">
+              Note
+            </div>
+          </div>
+        </div>
+      </p>
+      </li>
+      {% for payment in group.payments %}
+
+      <li class="list-group-item ml-3 mr-3">
+        <p>
+          <div class="container-fluid">
+            <div class="row ">
+          
+              <div class="col-lg-1 col-md-6">
+                {{payment.name}}
+              </div>
+              <div class="col-lg-1 col-md-6">
+                {{payment.amount}}
+              </div>
+              <div class="col-lg-1 col-md-6">
+                {{payment.currency}}
+              </div>
+              <div class="col-lg-1 col-md-6">
+                {{payment.payer}}
+              </div>
+              <div class="col-lg-2 col-md-3">
+                {{payment.debtors}}
+              </div>
+              <div class="col-lg-2 col-md-3">
+                  {{payment.date.strftime('%H:%M \n %d/%m/%Y')}}
+              </div>
+              <div class="col-lg-3 col-md-3" style="width:100px; overflow-x:scroll; overflow-y:hidden;">
+
+                  {{payment.note}}
+
+              </div>
+
+              <button type="button" class="close" onClick="deletePayment({{payment.id}})" >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            
+            </div>
+
+          </div>
+
+        </p>
+      </li>
+    </div>
+
+
+
+{% endfor %} {% endblock %}
