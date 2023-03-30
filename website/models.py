@@ -22,8 +22,7 @@ class Group(db.Model, UserMixin):
     payments = db.relationship('Payment')
 
 
-class Member(db.Model):
+class Debtor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
-    debt = db.Column(db.Integer)
-    
+    debts = db.Column(db.ARRAY(String))

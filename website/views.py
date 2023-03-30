@@ -1,7 +1,9 @@
 from .models import Group
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_user, current_user
-from .models import Group, Payment, Member
+from .models import Group, Payment, Debtor
 from . import db
 import uuid
 from datetime import datetime
@@ -67,8 +69,27 @@ def create_payment():
         payment = Payment(name=name, amount=amount, currency=currency, payer=payer,
                           debtors=debtors, date=date, note=note, group_id=current_user.id)
         db.session.add(payment)
-
         db.session.commit()
+
+        debtor_array = []
+        if ',' in debtors:
+            debtor_array = debtors.split(',')
+        elif ';' in debtors:
+            debtor_array = debtors.split(';')
+
+        # splits the dept to array of deptors
+        temp_loop = 0
+        temp_array_lengh = len(debtor_array)
+        temp_split_str = str(amount/temp_array_lengh)
+        while temp_loop < temp_array_lengh:
+            if debtor_array[temp_loop] == payer:
+                debtor_array.pop(temp_loop)
+                temp_array_lengh -= 1
+            debtor_array[temp_loop] = [debtor_array[temp_loop], temp_split_str]
+            if bool(db.session.query(Debtor).filter_by(name='John Smith').first())
+            temp_loop += 1
+        del temp_loop, temp_array_lengh, temp_split_str
+        print("Deptors ", debtor_array)
 
     return render_template("home.html", group=current_user)
 
