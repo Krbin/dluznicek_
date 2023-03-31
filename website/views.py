@@ -69,6 +69,20 @@ def create_payment():
         payment = Payment(name=name, amount=amount, currency=currency, payer=payer,
                           debtors=debtors, date=date, note=note, group_id=current_user.id)
         db.session.add(payment)
+        
+        temp_loop = 0
+        temp_array_lengh = len(debtor_array)
+        temp_split_str = str(amount/temp_array_lengh)
+        while temp_loop < temp_array_lengh:
+            if debtor_array[temp_loop] == payer:
+                debtor_array.pop(temp_loop)
+                temp_array_lengh -= 1
+            debtor_array[temp_loop] = [debtor_array[temp_loop], temp_split_str]
+            # if bool(db.session.query(Debtor).filter_by(name='John Smith').first())
+            temp_loop += 1
+        del temp_loop, temp_array_lengh, temp_split_str
+        
+        
         db.session.commit()
 
         debtor_array = []
@@ -78,17 +92,8 @@ def create_payment():
             debtor_array = debtors.split(';')
 
         # splits the dept to array of deptors
-        temp_loop = 0
-        temp_array_lengh = len(debtor_array)
-        temp_split_str = str(amount/temp_array_lengh)
-        while temp_loop < temp_array_lengh:
-            if debtor_array[temp_loop] == payer:
-                debtor_array.pop(temp_loop)
-                temp_array_lengh -= 1
-            debtor_array[temp_loop] = [debtor_array[temp_loop], temp_split_str]
-            if bool(db.session.query(Debtor).filter_by(name='John Smith').first())
-            temp_loop += 1
-        del temp_loop, temp_array_lengh, temp_split_str
+
+        
         print("Deptors ", debtor_array)
 
     return render_template("home.html", group=current_user)
